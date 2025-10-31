@@ -1,0 +1,53 @@
+<template>
+  <div class="plus">
+    <h1>덧셈 기능 만들기</h1>
+    <label>num1: </label><input type="text" v-model="num1">&nbsp;
+    <label>num2: </label><input type="text" v-model="num2">&nbsp;
+    <button @click="sendPlus">더하기</button>
+    <button @click="sendPlus2">post더하기</button>
+    <hr>
+    <p>{{ num1 }} + {{ num2 }} = {{ sum }}</p>
+  </div>
+</template>
+
+<script setup>
+  import {ref} from 'vue';
+
+  const num1 = ref(0);
+  const num2 = ref(0);
+  const sum = ref(0);
+
+  const sendPlus = async() => {
+    const response = await fetch(`http://localhost:7777/plus?num1=${num1.value}&num2=${num2.value}`);
+    console.log(response);
+    const data = await response.json();
+    console.log(data);
+    sum.value = data.sum;
+
+  }
+
+  const sendPlus2 = async() => {
+    const response = await fetch(`http://localhost:7777/plus`,
+      {
+        method :"POST",
+        body : '{"num1" : 1, "num2" : 2}',
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+    }
+
+      }
+    );
+    console.log(response);
+    const data = await response.json();
+    console.log(data);
+    sum.value = data.sum;
+
+  }
+</script>
+
+<style scoped>
+  .plus{
+    text-align: center;
+  }
+</style>
