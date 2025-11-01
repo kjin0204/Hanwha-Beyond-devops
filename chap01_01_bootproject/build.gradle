@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.hyeong'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 description = 'chap01_01_bootproject'
 
 java {
