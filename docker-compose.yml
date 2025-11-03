@@ -1,0 +1,33 @@
+## docker-compose를 사용하면 여러개의 이미지 및 컨테이너를 다룰 수 있다.
+
+services:
+  springboot-app:
+    build:
+      context: ./chap01_01_bootproject
+      dockerfile: Dockerfile
+    image: kang92/boot_19_project
+    container_name: boot-container
+    ports:
+      - "8055:7777"
+    networks:
+      - camp-net
+
+  vue-app:
+    build:
+      context: ./chap01_02_vueproject
+      dockerfile: Dockerfile
+    image: kang92/vue_19_project
+    container_name: vue-container
+    ports:
+      - "8011:5173"
+    networks:
+      - camp-net
+## 네트워크 드라이버 옵션
+## 1. bridge: 기본 값, 대부분의 경우에 적합하며 컨테이너간 사설 네트워크
+## 2. host: 호스트 네트워크를 직접 사용, 성능은 좋지만 보안에 취약하며 포트가 겹칠 수 있음
+## 3. none: 네트워크 기능 없이 완전히 격리된 상태
+networks:
+  camp-net:
+    driver: bridge
+
+    
