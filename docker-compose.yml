@@ -1,33 +1,65 @@
-## docker-compose를 사용하면 여러개의 이미지 및 컨테이너를 다룰 수 있다.
-
 services:
-  springboot-app:
-    build:
-      context: ./chap01_01_bootproject
-      dockerfile: Dockerfile
-    image: kang92/boot_19_project
-    container_name: boot-container
+  mariadb-persist:                                    
+    image: mariadb:latest
+    container_name: mariadb-persist
+    environment:    # 이미지 생성시 환경설정
+      - MARIADB_ROOT_PASSWORD=root1234
+      - MARIADB_DATABASE=calcdb
     ports:
-      - "8055:7777"
+      - "3310:3306"
+    volumes:
+      - mariadb-volume:/var/lib/mysql   # 마리아DB 데이터 를 vloume에 저장
+      - mariadb-logs:/var/log/mysql     # 마리아DB 로그 를 vloume에 저장
     networks:
       - camp-net
+    restart: always
+    ## 로그 관련 설정
+    command: >                                        
+      --log-error=/var/log/mysql/error.log
+      --general-log=1
+      --general-log-file=/var/log/mysql/general.log
+      --slow-query-log=1
+      --slow-query-log-file=/var/log/mysql/slow.log
+      --long-query-time=2
+    healthcheck:   ## health체크                                      
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  springboot-app:
+    build:
+      context: ./chap02_01_bootproject
+    image: ys0915/calc-volume:latest                  
+    container_name: spring-calc-with-db               
+    ports:
+      - "8055:7777"                                   
+    networks:
+      - camp-net
+    depends_on:                                       
+      mariadb-persist:
+        condition: service_healthy    # 마리아 db 컨테이너가 정상이면 실행 되겠다 
+    restart: always
 
   vue-app:
     build:
-      context: ./chap01_02_vueproject
-      dockerfile: Dockerfile
-    image: kang92/vue_19_project
-    container_name: vue-container
+      context: ./chap02_02_vueproject
+    image: ys0915/vue_19_project
+    container_name: vue-container-integrated          
     ports:
       - "8011:5173"
     networks:
       - camp-net
-## 네트워크 드라이버 옵션
-## 1. bridge: 기본 값, 대부분의 경우에 적합하며 컨테이너간 사설 네트워크
-## 2. host: 호스트 네트워크를 직접 사용, 성능은 좋지만 보안에 취약하며 포트가 겹칠 수 있음
-## 3. none: 네트워크 기능 없이 완전히 격리된 상태
+    depends_on:                                      
+      - springboot-app  # 실행시 선후 관계, 여기서는 백엔드 서버가 켜진 후 실행
+    restart: always     # 컨테이너가 꺼지면 자동으로 재 실행
+
+volumes:                                              
+  mariadb-volume:
+    driver: local
+  mariadb-logs:
+    driver: local
+
 networks:
   camp-net:
     driver: bridge
-
-    
