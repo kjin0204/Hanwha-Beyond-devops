@@ -4,6 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
+    ## 브릿지로 연결할 mariaDB 서비스명 입력
     url: jdbc:mariadb://mariadb-persist:3306/calcdb
     username: root
     password: root1234
@@ -13,6 +14,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+            ## 마리아 DB 폼에 맞게 log 출력
     show-sql: true
     properties:
       hibernate:
