@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: boot001dep
+spec:
+  selector:
+    matchLabels:
+      app: boot001kube
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: boot001kube
+    spec:
+      containers:
+      - name: boot-container
+        image: kang92/k8s_19_boot:latest # 태깅해야 나중에 k8s에 용이함!
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 7777

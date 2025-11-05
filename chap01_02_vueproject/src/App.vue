@@ -43,8 +43,17 @@
     //       body: JSON.stringify({num1: num1.value, num2: num2.value})
     //     })
 
-    /* 5. 백엔드에서 x, 프론트에서 CORS(프론트와 백엔드 모두 컨테이너화(docker-copose, bridge network활용)) */
-    const response = await fetch(`http://localhost:8011/api/plus`, {
+    // /* 5. 백엔드에서 x, 프론트에서 CORS(프론트와 백엔드 모두 컨테이너화(docker-copose, bridge network활용)) */
+    // const response = await fetch(`http://localhost:8011/api/plus`, {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json;charset=utf-8;'
+    //       },
+    //       body: JSON.stringify({num1: num1.value, num2: num2.value})
+    //     })
+
+    /* 6. 백엔드에서 CORS, 프론트에서 x(k8s nodeport 적용(인그래스 사용 전) ) */
+    const response = await fetch(`http://localhost:30001/plus`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8;'
