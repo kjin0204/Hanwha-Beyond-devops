@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: boot002ser
 spec:
-  type: ClusterIP
+  type: ClusterIP       # ingress 추가 후 외부에서 워커노드로 접근 x, 클러스터 내부에서만 활용(ingress가 활용)
   ports:
   - port: 8001
     targetPort: 7777

@@ -3,10 +3,14 @@ kind: Deployment
 metadata:
   name: boot001dep
 spec:
+
+  # 디플로이먼트 컨트롤러가 인지할 파드의 라벨정보
   selector:
     matchLabels:
-      app: boot001kube
-  replicas: 3
+      app: boot001kube  # deployment가 인지할 pod의 이름
+  replicas: 3           # pod가 세개 유지
+
+  # 생성 할 파드의 정보
   template:
     metadata:
       labels:
@@ -15,6 +19,10 @@ spec:
       containers:
       - name: boot-container
         image: kang92/k8s_19_boot:latest # 태깅해야 나중에 k8s에 용이함!
+        
+        # 1. Always면 무조건 Docker Hub에서 이미지를 가져옴
+        # 2. IfNotPresent면 Local에 없으면 Docker Hub에서 이미지를 가져옴(Local 우선)
+        # 3. Never면 Local 이미지만 활용(Only Local)
         imagePullPolicy: Always
         ports:
         - containerPort: 7777
