@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb003ser
+spec:
+  type: ClusterIP
+  ports:
+  - port: 3310
+    targetPort: 3306  # 컨테이너 내부는 여전히 3306 사용
+  selector:
+    app: mariadb003kube
+

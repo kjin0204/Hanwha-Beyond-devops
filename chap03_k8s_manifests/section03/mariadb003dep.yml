@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb003dep
+spec:
+  selector:
+    matchLabels:
+      app: mariadb003kube
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mariadb003kube
+    spec:
+      containers:
+      - name: mariadb-container
+        image: mariadb:latest
+        env:
+        - name: MARIADB_ROOT_PASSWORD
+          value: "root1234"
+        - name: MARIADB_DATABASE
+          value: "calcdb"
+        ports:
+        - containerPort: 3306
+        args:
+        - --log-error=/var/log/mysql/error.log
+        - --general-log=1
+        - --general-log-file=/var/log/mysql/general.log
+        - --slow-query-log=1
+        - --slow-query-log-file=/var/log/mysql/slow.log
+        - --long-query-time=2
+        volumeMounts:
+        - name: mariadb-data
+          mountPath: /var/lib/mysql
+        - name: mariadb-logs
+          mountPath: /var/log/mysql
+        livenessProbe:
+          exec:
+            command:
+            - healthcheck.sh
+            - --connect
+            - --innodb_initialized
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 5
+        readinessProbe:
+          exec:
+            command:
+            - healthcheck.sh
+            - --connect
+            - --innodb_initialized
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 5
+      volumes:
+      - name: mariadb-data
+        persistentVolumeClaim:
+          claimName: mariadb-data-pvc
+      - name: mariadb-logs
+        persistentVolumeClaim:
+          claimName: mariadb-logs-pvc
+

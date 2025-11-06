@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: boot003ser
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8001
+    targetPort: 7777
+  selector:
+    app: boot003kube
+

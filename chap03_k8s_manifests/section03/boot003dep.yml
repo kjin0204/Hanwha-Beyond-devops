@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: boot003dep
+spec:
+  selector:
+    matchLabels:
+      app: boot003kube
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: boot003kube
+    spec:
+      containers:
+      - name: boot-container
+        image: kang92/jen_19_boot:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 7777
+        env:
+        # Spring Boot는 application.yml에 이미 mariadb-persist를 호스트로 사용하도록 설정되어 있으므로
+        # Kubernetes에서는 서비스명(mariadb003ser)을 사용하도록 환경변수로 재정의합니다.
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:mariadb://mariadb003ser:3310/calcdb"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "root"
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: "root1234"
+
+        # 컨테이너가 트래픽을 받을 준비가 되었는지 확인
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 7777
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        # 컨테이너가 정상적으로 실행 중인지 확인
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 7777
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          timeoutSeconds: 5
+          failureThreshold: 3
+

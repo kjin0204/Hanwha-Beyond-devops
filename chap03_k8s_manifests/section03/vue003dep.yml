@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue003dep
+spec:
+  selector:
+    matchLabels:
+      app: vue003kube
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: vue003kube
+    spec:
+      containers:
+      - name: vue-container
+        image: kang92/jen_19_vue:latest
+        imagePullPolicy: Always 
+        ports:
+        - containerPort: 80
+
