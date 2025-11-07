@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: boot-container
-        image: kang92/jen_19_boot:latest
+        image: kang92/jen_19_boot2:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 7777

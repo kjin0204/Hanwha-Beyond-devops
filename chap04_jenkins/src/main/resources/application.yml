@@ -1,0 +1,24 @@
+server:
+  port: 7777
+
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    ## 브릿지로 연결할 mariaDB 서비스명 입력
+    ## docker-compose용
+    # url: jdbc:mariadb://mariadb-persist:3306/calcdb
+    url: jdbc:mariadb://mariadb003ser:3310/calcdb     # k8s ingress 적용 후
+    username: root
+    password: root1234
+
+  # create: 서버가 새로 실행 될 때 기존 테이블을 drop하고 새로 create
+  # update: 서버가 새로 실행 될 때 기존 테이블이 없다면 create, 있다면 컬럼 추가 시에만 alter
+  jpa:
+    hibernate:
+      ddl-auto: update
+            ## 마리아 DB 폼에 맞게 log 출력
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MariaDBDialect
