@@ -28,6 +28,7 @@ public class CalculatorService {
         CalculationHistory history =
                 new CalculationHistory(calculatorDTO.getNum1(), calculatorDTO.getNum2(), result);
         calculationHistoryRepository.save(history);
+        calculatorDTO.setSum(result);
         log.info("계산 이력 저장 완료: {}", history);
 
         // 정렬 query, order CreatedA by desc

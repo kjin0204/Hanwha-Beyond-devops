@@ -5,7 +5,9 @@ spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     ## 브릿지로 연결할 mariaDB 서비스명 입력
-    url: jdbc:mariadb://mariadb-persist:3306/calcdb
+    ## docker-compose용
+    # url: jdbc:mariadb://mariadb-persist:3306/calcdb
+    url: jdbc:mariadb://mariadb003ser:3310/calcdb     # k8s ingress 적용 후
     username: root
     password: root1234
 

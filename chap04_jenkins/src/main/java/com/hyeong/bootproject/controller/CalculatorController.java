@@ -25,7 +25,7 @@ public class CalculatorController {
 
     @GetMapping("/health")
     public String healThCheck() {
-        return "I'm Alive!";
+        return "I'm Alive! Good Weather! git Webhook check";
     }
 
     @PostMapping("/plus")

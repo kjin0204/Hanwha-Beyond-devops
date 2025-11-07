@@ -1,0 +1,25 @@
+server:
+  port: 7777
+
+## build.gradle에 h2 database dependency 추가
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+
+    ## mem(Memory Mode): 메모리에만 저장하고 어플리케이션 종료 시 삭제
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+
+      ## 어플리케이션 시작 시 테이블 생성, 종료 시 제거
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+        ## H2 DBMS 설정
+        dialect: org.hibernate.dialect.H2Dialect

@@ -79,8 +79,18 @@
     //   body: JSON.stringify({num1: num1.value, num2: num2.value})
     // })
 
-    /* 6. 백엔드에서 CORS, 프론트에서 X(Vue + Spring Boot(JPA) + MariaDB(Docker-Compose)) */
-    const response = await fetch(`http://localhost:8055/plus`, {
+    // /* 6. 백엔드에서 CORS, 프론트에서 X(Vue + Spring Boot(JPA) + MariaDB(Docker-Compose)) */
+    // const response = await fetch(`http://localhost:8055/plus`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json;charset=utf-8;'
+    //   },
+    //   body: JSON.stringify({num1: num1.value, num2: num2.value})
+    // })
+    
+
+    /* 7. 백엔드에서 x, 프론트에서 X(Vue + Spring Boot(JPA) + MariaDB(k8s)) */
+    const response = await fetch(`http://localhost/boot/plus`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8;'
@@ -98,7 +108,8 @@
 
   const getHistory = async() => {
       try {
-          const response = await fetch(`http://localhost:8055/history`);  // Docker-Compose용
+        //   const response = await fetch(`http://localhost:8055/history`);  // Docker-Compose용
+          const response = await fetch(`http://localhost/boot/history`);  // k8s ingress용
           const data = await response.json();
           console.log('history:', data);
           historyList.value = data;

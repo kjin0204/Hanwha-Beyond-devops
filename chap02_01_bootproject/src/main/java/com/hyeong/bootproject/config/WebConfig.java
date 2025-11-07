@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
 
-    @Override
+    // @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")                  // origin 이후 요청 경로 패턴
                 .allowedOrigins("*")        // origin 등록(어떤 front 서버든 상관 없이 허용)

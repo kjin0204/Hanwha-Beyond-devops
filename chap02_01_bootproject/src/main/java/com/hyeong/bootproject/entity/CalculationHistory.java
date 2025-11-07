@@ -30,7 +30,7 @@ public class CalculationHistory {
 
     @PrePersist
     protected void onCreate() {
-       createdAt = LocalDateTime.now(); // DB에 들어가기 전(save() 시점)
+       createdAt = LocalDateTime.now().plusHours(9); // DB에 들어가기 전(save() 시점) utc 시간이여서 한국시간 적용 해 줌
     }
 
     public CalculationHistory(Integer num1, Integer num2, Integer result) {
